@@ -20,7 +20,7 @@
         .cover-img { width: 100%; border-radius: 10px; margin-bottom: 12px; max-height: 250px; object-fit: cover; }
         .video-title { font-size: 14px; font-weight: 600; margin-bottom: 15px; color: #f0f6fc; line-height: 1.4; }
         
-        .section-label { font-size: 13px; color: #8b949e; margin-top: 12px; margin-bottom: 8px; font-weight: bold; display: block; border-bottom: 1px solid #21262d; padding-bottom: 4px; }
+        .section-label { font-size: 13px; color: #8b949e; margin-top: 14px; margin-bottom: 8px; font-weight: bold; display: block; border-bottom: 1px solid #21262d; padding-bottom: 4px; }
         .download-options { display: flex; flex-direction: column; gap: 10px; }
         .dl-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; color: white; text-align: center; }
         .dl-1080 { background-color: #238636; }
@@ -47,17 +47,17 @@
         <img id="coverImg" class="cover-img" src="" alt="Cover">
         <div id="videoTitle" class="video-title"></div>
         
-        <!-- Video Section -->
+        <!-- Video Options -->
         <span class="section-label">🎬 Video Quality එක තෝරන්න:</span>
         <div class="download-options">
-            <a id="btn1080" class="dl-btn dl-1080" href="#" target="_blank">✨ 1080p Full HD (No Watermark)</a>
-            <a id="btn720" class="dl-btn dl-720" href="#" target="_blank">📹 720p Normal HD (No Watermark)</a>
+            <a id="btn1080" class="dl-btn dl-1080" href="#">✨ 1080p Full HD (No Watermark)</a>
+            <a id="btn720" class="dl-btn dl-720" href="#">📹 720p Normal HD (No Watermark)</a>
         </div>
         
-        <!-- Audio Section -->
+        <!-- Audio Option -->
         <span class="section-label" id="audioLabel">🎵 Audio (සංගීතය පමණක්):</span>
         <div class="download-options">
-            <a id="btnMP3" class="dl-btn dl-mp3" href="#" target="_blank">🎧 MP3 Download</a>
+            <a id="btnMP3" class="dl-btn dl-mp3" href="#">🎧 MP3 Download</a>
         </div>
     </div>
 </div>
@@ -99,25 +99,25 @@
                 const btnMP3 = document.getElementById('btnMP3');
                 const audioLabel = document.getElementById('audioLabel');
                 
-                // 1080p HD
+                // 1080p Download Link
                 if (info.video_hd) { 
-                    btn1080.href = info.video_hd; 
+                    btn1080.href = `/api/download?url=${encodeURIComponent(info.video_hd)}&title=${encodeURIComponent(info.title)}&ext=mp4`; 
                     btn1080.style.display = 'flex'; 
                 } else { 
                     btn1080.style.display = 'none'; 
                 }
                 
-                // 720p Normal
+                // 720p Download Link
                 if (info.video_sd) { 
-                    btn720.href = info.video_sd; 
+                    btn720.href = `/api/download?url=${encodeURIComponent(info.video_sd)}&title=${encodeURIComponent(info.title)}&ext=mp4`; 
                     btn720.style.display = 'flex'; 
                 } else { 
                     btn720.style.display = 'none'; 
                 }
                 
-                // MP3 Audio
+                // MP3 Audio Link
                 if (info.audio) { 
-                    btnMP3.href = info.audio; 
+                    btnMP3.href = `/api/download?url=${encodeURIComponent(info.audio)}&title=${encodeURIComponent(info.title)}&ext=mp3`; 
                     btnMP3.style.display = 'flex'; 
                     audioLabel.style.display = 'block';
                 } else { 
