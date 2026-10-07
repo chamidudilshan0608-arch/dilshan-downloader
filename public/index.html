@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DILSHAN MEDIA DOWNLOADER</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #0d1117; color: #c9d1d9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        .container { width: 100%; max-width: 480px; background: #161b22; border: 1px solid #30363d; border-radius: 16px; padding: 24px; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); text-align: center; }
+        h1 { color: #58a6ff; font-size: 22px; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 1px; }
+        .subtitle { font-size: 13px; color: #8b949e; margin-bottom: 20px; }
+        .input-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        input[type="text"] { width: 100%; padding: 14px; border-radius: 8px; border: 1px solid #30363d; background-color: #0d1117; color: #ffffff; font-size: 14px; outline: none; }
+        input[type="text"]:focus { border-color: #58a6ff; }
+        button.btn-search { width: 100%; padding: 14px; border-radius: 8px; border: none; background: linear-gradient(135deg, #1f6feb, #238636); color: white; font-size: 15px; font-weight: bold; cursor: pointer; transition: opacity 0.2s; }
+        button.btn-search:hover { opacity: 0.9; }
+        #loading { display: none; margin: 15px 0; color: #58a6ff; font-size: 14px; }
+        #result { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #30363d; text-align: left; }
+        .cover-img { width: 100%; border-radius: 10px; margin-bottom: 12px; max-height: 250px; object-fit: cover; }
+        .video-title { font-size: 14px; font-weight: 600; margin-bottom: 15px; color: #f0f6fc; line-height: 1.4; }
+        .download-options { display: flex; flex-direction: column; gap: 10px; }
+        .dl-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; color: white; text-align: center; }
+        .dl-hd { background-color: #238636; }
+        .dl-sd { background-color: #1f6feb; }
+        .dl-mp3 { background-color: #8957e5; }
+        .dl-btn:hover { opacity: 0.85; }
+        .error-msg { color: #f85149; font-size: 13px; margin-top: 10px; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>DILSHAN MEDIA DOWNLOADER</h1>
+    <p class="subtitle">TikTok HD Video & MP3 Audio Downloader</p>
+    <div class="input-group">
+        <input type="text" id="tiktokUrl" placeholder="TikTok Video Link එක Paste කරන්න...">
+        <button class="btn-search" onclick="fetchTikTok()">Download Links ලබාගන්න</button>
+    </div>
+    <div id="loading">දත්ත ලබාගනිමින් පවතී...</div>
+    <div id="errorMsg" class="error-msg"></div>
+    <div id="result">
+        <img id="coverImg" class="cover-img" src="" alt="Cover">
+        <div id="videoTitle" class="video-title"></div>
+        <div class="download-options">
+            <a id="btnHD" class="dl-btn dl-hd" href="#" target="_blank">🎬 HD Video (No Watermark)</a>
+            <a id="btnSD" class="dl-btn dl-sd" href="#" target="_blank">📹 Normal Video (No Watermark)</a>
+            <a id="btnMP3" class="dl-btn dl-mp3" href="#" target="_blank">🎵 Audio / MP3 (Music Only)</a>
+        </div>
+    </div>
+</div>
+<script>
+    async function fetchTikTok() {
+        const urlInput = document.getElementById('tiktokUrl').value.trim();
+        const loading = document.getElementById('loading');
+        const errorMsg = document.getElementById('errorMsg');
+        const result = document.getElementById('result');
+        errorMsg.innerText = '';
+        result.style.display = 'none';
+        if (!urlInput) { errorMsg.innerText = 'කරුණාකර TikTok Link එකක් ඇතුළත් කරන්න.'; return; }
+        loading.style.display = 'block';
+        try {
+            const res = await fetch('/api/tiktok', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: urlInput })
+            });
+            const data = await res.json();
+            loading.style.display = 'none';
+            if (data.success) {
+                const info = data.data;
+                document.getElementById('coverImg').src = info.cover;
+                document.getElementById('videoTitle').innerText = info.title + " (@" + info.author + ")";
+                const btnHD = document.getElementById('btnHD');
+                const btnSD = document.getElementById('btnSD');
+                const btnMP3 = document.getElementById('btnMP3');
+                if (info.video_hd) { btnHD.href = info.video_hd; btnHD.style.display = 'flex'; } else { btnHD.style.display = 'none'; }
+                if (info.video_sd) { btnSD.href = info.video_sd; btnSD.style.display = 'flex'; } else { btnSD.style.display = 'none'; }
+                if (info.audio) { btnMP3.href = info.audio; btnMP3.style.display = 'flex'; } else { btnMP3.style.display = 'none'; }
+                result.style.display = 'block';
+            } else { errorMsg.innerText = data.message || 'දත්ත ලබාගැනීමට නොහැකි විය.'; }
+        } catch (e) {
+            loading.style.display = 'none';
+            errorMsg.innerText = 'Server එකට සම්බන්ධ වීමට නොහැකි විය.';
+        }
+    }
+</script>
+</body>
+</html>
