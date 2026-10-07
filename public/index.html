@@ -20,7 +20,7 @@
         .cover-img { width: 100%; border-radius: 10px; margin-bottom: 12px; max-height: 250px; object-fit: cover; }
         .video-title { font-size: 14px; font-weight: 600; margin-bottom: 15px; color: #f0f6fc; line-height: 1.4; }
         
-        .quality-label { font-size: 13px; color: #8b949e; margin-bottom: 8px; font-weight: bold; display: block; }
+        .section-label { font-size: 13px; color: #8b949e; margin-top: 12px; margin-bottom: 8px; font-weight: bold; display: block; border-bottom: 1px solid #21262d; padding-bottom: 4px; }
         .download-options { display: flex; flex-direction: column; gap: 10px; }
         .dl-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; color: white; text-align: center; }
         .dl-1080 { background-color: #238636; }
@@ -33,7 +33,7 @@
 <body>
 <div class="container">
     <h1>DILSHAN TIKTOK DOWNLOADER</h1>
-    <p class="subtitle">Download TikTok Videos in 1080p / 720p Quality</p>
+    <p class="subtitle">Download TikTok Videos in HD Quality & MP3</p>
     
     <div class="input-group">
         <input type="text" id="tiktokUrl" placeholder="TikTok Video Link එක Paste කරන්න...">
@@ -47,11 +47,17 @@
         <img id="coverImg" class="cover-img" src="" alt="Cover">
         <div id="videoTitle" class="video-title"></div>
         
-        <span class="quality-label">Quality එක තෝරන්න:</span>
+        <!-- Video Section -->
+        <span class="section-label">🎬 Video Quality එක තෝරන්න:</span>
         <div class="download-options">
-            <a id="btn1080" class="dl-btn dl-1080" href="#" target="_blank">🎬 1080p Full HD (No Watermark)</a>
+            <a id="btn1080" class="dl-btn dl-1080" href="#" target="_blank">✨ 1080p Full HD (No Watermark)</a>
             <a id="btn720" class="dl-btn dl-720" href="#" target="_blank">📹 720p Normal HD (No Watermark)</a>
-            <a id="btnMP3" class="dl-btn dl-mp3" href="#" target="_blank">🎵 MP3 Audio Only</a>
+        </div>
+        
+        <!-- Audio Section -->
+        <span class="section-label" id="audioLabel">🎵 Audio (සංගීතය පමණක්):</span>
+        <div class="download-options">
+            <a id="btnMP3" class="dl-btn dl-mp3" href="#" target="_blank">🎧 MP3 Download</a>
         </div>
     </div>
 </div>
@@ -91,8 +97,9 @@
                 const btn1080 = document.getElementById('btn1080');
                 const btn720 = document.getElementById('btn720');
                 const btnMP3 = document.getElementById('btnMP3');
+                const audioLabel = document.getElementById('audioLabel');
                 
-                // Set 1080p (HD) Link
+                // 1080p HD
                 if (info.video_hd) { 
                     btn1080.href = info.video_hd; 
                     btn1080.style.display = 'flex'; 
@@ -100,7 +107,7 @@
                     btn1080.style.display = 'none'; 
                 }
                 
-                // Set 720p (SD/Normal) Link
+                // 720p Normal
                 if (info.video_sd) { 
                     btn720.href = info.video_sd; 
                     btn720.style.display = 'flex'; 
@@ -108,12 +115,14 @@
                     btn720.style.display = 'none'; 
                 }
                 
-                // Set Audio Link
+                // MP3 Audio
                 if (info.audio) { 
                     btnMP3.href = info.audio; 
                     btnMP3.style.display = 'flex'; 
+                    audioLabel.style.display = 'block';
                 } else { 
                     btnMP3.style.display = 'none'; 
+                    audioLabel.style.display = 'none';
                 }
                 
                 result.style.display = 'block';
