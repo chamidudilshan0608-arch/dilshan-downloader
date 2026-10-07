@@ -136,10 +136,12 @@
             justify-content: center;
             padding: 12px;
             border-radius: 8px;
-            text-decoration: none;
             color: #ffffff;
             font-weight: bold;
             font-size: 14px;
+            cursor: pointer;
+            border: none;
+            width: 100%;
             transition: opacity 0.2s;
         }
         .dl-1080 { background-color: #238636; } /* Green */
@@ -192,10 +194,10 @@
 
             <div class="section-label">Select Quality to Download:</div>
             <div class="download-options">
-                <a id="dl1080" class="dl-btn dl-1080" href="#" target="_blank">Download 1080p Full HD (No Watermark)</a>
-                <a id="dl720" class="dl-btn dl-720" href="#" target="_blank">Download 720p HD (No Watermark)</a>
-                <a id="dlWm" class="dl-btn dl-wm" href="#" target="_blank">Download Watermark Video</a>
-                <a id="dlMp3" class="dl-btn dl-mp3" href="#" target="_blank">Download Audio (MP3)</a>
+                <button id="dl1080" class="dl-btn dl-1080">Download 1080p Full HD (No Watermark)</button>
+                <button id="dl720" class="dl-btn dl-720">Download 720p HD (No Watermark)</button>
+                <button id="dlWm" class="dl-btn dl-wm">Download Watermark Video</button>
+                <button id="dlMp3" class="dl-btn dl-mp3">Download Audio (MP3)</button>
             </div>
         </div>
 
@@ -205,6 +207,8 @@
     </div>
 
     <script>
+        let mediaLinks = {};
+
         async function fetchVideo() {
             const urlInput = document.getElementById('videoUrl').value.trim();
             const loading = document.getElementById('loading');
@@ -220,6 +224,7 @@
                 return;
             }
 
+            loading.innerText = "Processing... Please wait...";
             loading.style.display = 'block';
 
             try {
@@ -232,19 +237,18 @@
                     document.getElementById('coverImg').src = data.data.cover;
                     document.getElementById('videoTitle').innerText = data.data.title || "Video";
                     
-                    // 1080p Full HD (uses hdplay if available, else play)
-                    const hdUrl = data.data.hdplay || data.data.play;
-                    // 720p HD
-                    const sdUrl = data.data.play;
-                    // Watermarked
-                    const wmUrl = data.data.wmplay || data.data.play;
-                    // MP3
-                    const mp3Url = data.data.music;
+                    mediaLinks = {
+                        hd1080: data.data.hdplay || data.data.play,
+                        sd720: data.data.play,
+                        wm: data.data.wmplay || data.data.play,
+                        mp3: data.data.music,
+                        title: data.data.title ? data.data.title.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 25) : "video"
+                    };
 
-                    document.getElementById('dl1080').href = hdUrl;
-                    document.getElementById('dl720').href = sdUrl;
-                    document.getElementById('dlWm').href = wmUrl;
-                    document.getElementById('dlMp3').href = mp3Url;
+                    document.getElementById('dl1080').onclick = () => downloadFile(mediaLinks.hd1080, `${mediaLinks.title}_1080p.mp4`);
+                    document.getElementById('dl720').onclick = () => downloadFile(mediaLinks.sd720, `${mediaLinks.title}_720p.mp4`);
+                    document.getElementById('dlWm').onclick = () => downloadFile(mediaLinks.wm, `${mediaLinks.title}_watermark.mp4`);
+                    document.getElementById('dlMp3').onclick = () => downloadFile(mediaLinks.mp3, `${mediaLinks.title}.mp3`);
 
                     result.style.display = 'block';
                 } else {
@@ -255,6 +259,41 @@
                 loading.style.display = 'none';
                 errorMsg.innerText = "An error occurred while downloading!";
                 errorMsg.style.display = 'block';
+            }
+        }
+
+        // Direct Download Function without opening new tab
+        async function downloadFile(fileUrl, fileName) {
+            if (!fileUrl) return;
+
+            const loading = document.getElementById('loading');
+            loading.innerText = "Downloading file directly to your device...";
+            loading.style.display = 'block';
+
+            try {
+                const response = await fetch(fileUrl);
+                const blob = await response.blob();
+                const blobUrl = window.URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = blobUrl;
+                link.download = fileName;
+                document.body.appendChild(link);
+                link.click();
+
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl);
+            } catch (error) {
+                // Fallback
+                const link = document.createElement('a');
+                link.href = fileUrl;
+                link.download = fileName;
+                link.target = '_self';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } finally {
+                loading.style.display = 'none';
             }
         }
     </script>
