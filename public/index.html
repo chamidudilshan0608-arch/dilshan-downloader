@@ -10,9 +10,9 @@
     <link rel="apple-touch-icon" href="/logo.png">
     
     <!-- Meta & SEO Tags -->
-    <meta name="description" content="Download TikTok & Media videos without watermark in HD quality & MP3 audio for free with Dilshan Media Downloader.">
+    <meta name="description" content="Download TikTok & Media videos in 1080p Full HD, 720p HD without watermark & MP3 audio for free with Dilshan Media Downloader.">
     <meta property="og:title" content="DILSHAN MEDIA DOWNLOADER">
-    <meta property="og:description" content="Free HD Video & Audio Downloader">
+    <meta property="og:description" content="Free 1080p, 720p Video & Audio Downloader">
     <meta property="og:image" content="/logo.png">
 
     <style>
@@ -142,9 +142,11 @@
             font-size: 14px;
             transition: opacity 0.2s;
         }
-        .dl-1080 { background-color: #238636; }
-        .dl-720 { background-color: #1f6feb; }
-        .dl-mp3 { background-color: #8957e5; }
+        .dl-1080 { background-color: #238636; } /* Green */
+        .dl-720 { background-color: #1f6feb; }  /* Blue */
+        .dl-wm { background-color: #d97706; }   /* Orange */
+        .dl-mp3 { background-color: #8957e5; }  /* Purple */
+        
         .dl-btn:hover { opacity: 0.85; }
         
         .error-msg {
@@ -157,6 +159,7 @@
             margin-top: 25px;
             font-size: 12px;
             color: #8b949e;
+            text-align: center;
         }
     </style>
 </head>
@@ -168,7 +171,7 @@
         
         <!-- Header -->
         <h1>DILSHAN MEDIA DOWNLOADER</h1>
-        <p class="subtitle">Download TikTok & Social Media Videos without Watermark in HD</p>
+        <p class="subtitle">Download TikTok & Social Media Videos in 1080p, 720p & MP3</p>
 
         <!-- Input Box & Button -->
         <div class="input-group">
@@ -187,10 +190,11 @@
             <img id="coverImg" class="cover-img" src="" alt="Video Thumbnail">
             <div id="videoTitle" class="video-title"></div>
 
-            <div class="section-label">Download Options:</div>
+            <div class="section-label">Select Quality to Download:</div>
             <div class="download-options">
-                <a id="dlNoWm" class="dl-btn dl-1080" href="#" target="_blank">Download HD (No Watermark)</a>
-                <a id="dlWm" class="dl-btn dl-720" href="#" target="_blank">Download Watermark Video</a>
+                <a id="dl1080" class="dl-btn dl-1080" href="#" target="_blank">Download 1080p Full HD (No Watermark)</a>
+                <a id="dl720" class="dl-btn dl-720" href="#" target="_blank">Download 720p HD (No Watermark)</a>
+                <a id="dlWm" class="dl-btn dl-wm" href="#" target="_blank">Download Watermark Video</a>
                 <a id="dlMp3" class="dl-btn dl-mp3" href="#" target="_blank">Download Audio (MP3)</a>
             </div>
         </div>
@@ -219,7 +223,7 @@
             loading.style.display = 'block';
 
             try {
-                const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}`);
+                const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}&hd=1`);
                 const data = await response.json();
 
                 loading.style.display = 'none';
@@ -228,9 +232,19 @@
                     document.getElementById('coverImg').src = data.data.cover;
                     document.getElementById('videoTitle').innerText = data.data.title || "Video";
                     
-                    document.getElementById('dlNoWm').href = data.data.play;
-                    document.getElementById('dlWm').href = data.data.wmplay || data.data.play;
-                    document.getElementById('dlMp3').href = data.data.music;
+                    // 1080p Full HD (uses hdplay if available, else play)
+                    const hdUrl = data.data.hdplay || data.data.play;
+                    // 720p HD
+                    const sdUrl = data.data.play;
+                    // Watermarked
+                    const wmUrl = data.data.wmplay || data.data.play;
+                    // MP3
+                    const mp3Url = data.data.music;
+
+                    document.getElementById('dl1080').href = hdUrl;
+                    document.getElementById('dl720').href = sdUrl;
+                    document.getElementById('dlWm').href = wmUrl;
+                    document.getElementById('dlMp3').href = mp3Url;
 
                     result.style.display = 'block';
                 } else {
