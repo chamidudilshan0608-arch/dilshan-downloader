@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DILSHAN MEDIA DOWNLOADER</title>
+    <title>DILSHAN TIKTOK DOWNLOADER</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #0d1117; color: #c9d1d9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
@@ -19,10 +19,12 @@
         #result { display: none; margin-top: 20px; padding-top: 20px; border-top: 1px solid #30363d; text-align: left; }
         .cover-img { width: 100%; border-radius: 10px; margin-bottom: 12px; max-height: 250px; object-fit: cover; }
         .video-title { font-size: 14px; font-weight: 600; margin-bottom: 15px; color: #f0f6fc; line-height: 1.4; }
+        
+        .quality-label { font-size: 13px; color: #8b949e; margin-bottom: 8px; font-weight: bold; display: block; }
         .download-options { display: flex; flex-direction: column; gap: 10px; }
         .dl-btn { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 14px; color: white; text-align: center; }
-        .dl-hd { background-color: #238636; }
-        .dl-sd { background-color: #1f6feb; }
+        .dl-1080 { background-color: #238636; }
+        .dl-720 { background-color: #1f6feb; }
         .dl-mp3 { background-color: #8957e5; }
         .dl-btn:hover { opacity: 0.85; }
         .error-msg { color: #f85149; font-size: 13px; margin-top: 10px; }
@@ -30,54 +32,94 @@
 </head>
 <body>
 <div class="container">
-    <h1>DILSHAN MEDIA DOWNLOADER</h1>
-    <p class="subtitle">TikTok HD Video & MP3 Audio Downloader</p>
+    <h1>DILSHAN TIKTOK DOWNLOADER</h1>
+    <p class="subtitle">Download TikTok Videos in 1080p / 720p Quality</p>
+    
     <div class="input-group">
         <input type="text" id="tiktokUrl" placeholder="TikTok Video Link එක Paste කරන්න...">
-        <button class="btn-search" onclick="fetchTikTok()">Download Links ලබාගන්න</button>
+        <button class="btn-search" onclick="fetchTikTok()">Video එක සොයන්න</button>
     </div>
+    
     <div id="loading">දත්ත ලබාගනිමින් පවතී...</div>
     <div id="errorMsg" class="error-msg"></div>
+    
     <div id="result">
         <img id="coverImg" class="cover-img" src="" alt="Cover">
         <div id="videoTitle" class="video-title"></div>
+        
+        <span class="quality-label">Quality එක තෝරන්න:</span>
         <div class="download-options">
-            <a id="btnHD" class="dl-btn dl-hd" href="#" target="_blank">🎬 HD Video (No Watermark)</a>
-            <a id="btnSD" class="dl-btn dl-sd" href="#" target="_blank">📹 Normal Video (No Watermark)</a>
-            <a id="btnMP3" class="dl-btn dl-mp3" href="#" target="_blank">🎵 Audio / MP3 (Music Only)</a>
+            <a id="btn1080" class="dl-btn dl-1080" href="#" target="_blank">🎬 1080p Full HD (No Watermark)</a>
+            <a id="btn720" class="dl-btn dl-720" href="#" target="_blank">📹 720p Normal HD (No Watermark)</a>
+            <a id="btnMP3" class="dl-btn dl-mp3" href="#" target="_blank">🎵 MP3 Audio Only</a>
         </div>
     </div>
 </div>
+
 <script>
     async function fetchTikTok() {
         const urlInput = document.getElementById('tiktokUrl').value.trim();
         const loading = document.getElementById('loading');
         const errorMsg = document.getElementById('errorMsg');
         const result = document.getElementById('result');
+        
         errorMsg.innerText = '';
         result.style.display = 'none';
-        if (!urlInput) { errorMsg.innerText = 'කරුණාකර TikTok Link එකක් ඇතුළත් කරන්න.'; return; }
+        
+        if (!urlInput) { 
+            errorMsg.innerText = 'කරුණාකර TikTok Link එකක් ඇතුළත් කරන්න.'; 
+            return; 
+        }
+        
         loading.style.display = 'block';
+        
         try {
             const res = await fetch('/api/tiktok', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ url: urlInput })
             });
+            
             const data = await res.json();
             loading.style.display = 'none';
+            
             if (data.success) {
                 const info = data.data;
                 document.getElementById('coverImg').src = info.cover;
                 document.getElementById('videoTitle').innerText = info.title + " (@" + info.author + ")";
-                const btnHD = document.getElementById('btnHD');
-                const btnSD = document.getElementById('btnSD');
+                
+                const btn1080 = document.getElementById('btn1080');
+                const btn720 = document.getElementById('btn720');
                 const btnMP3 = document.getElementById('btnMP3');
-                if (info.video_hd) { btnHD.href = info.video_hd; btnHD.style.display = 'flex'; } else { btnHD.style.display = 'none'; }
-                if (info.video_sd) { btnSD.href = info.video_sd; btnSD.style.display = 'flex'; } else { btnSD.style.display = 'none'; }
-                if (info.audio) { btnMP3.href = info.audio; btnMP3.style.display = 'flex'; } else { btnMP3.style.display = 'none'; }
+                
+                // Set 1080p (HD) Link
+                if (info.video_hd) { 
+                    btn1080.href = info.video_hd; 
+                    btn1080.style.display = 'flex'; 
+                } else { 
+                    btn1080.style.display = 'none'; 
+                }
+                
+                // Set 720p (SD/Normal) Link
+                if (info.video_sd) { 
+                    btn720.href = info.video_sd; 
+                    btn720.style.display = 'flex'; 
+                } else { 
+                    btn720.style.display = 'none'; 
+                }
+                
+                // Set Audio Link
+                if (info.audio) { 
+                    btnMP3.href = info.audio; 
+                    btnMP3.style.display = 'flex'; 
+                } else { 
+                    btnMP3.style.display = 'none'; 
+                }
+                
                 result.style.display = 'block';
-            } else { errorMsg.innerText = data.message || 'දත්ත ලබාගැනීමට නොහැකි විය.'; }
+            } else { 
+                errorMsg.innerText = data.message || 'දත්ත ලබාගැනීමට නොහැකි විය.'; 
+            }
         } catch (e) {
             loading.style.display = 'none';
             errorMsg.innerText = 'Server එකට සම්බන්ධ වීමට නොහැකි විය.';
