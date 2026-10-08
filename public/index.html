@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DILSHAN MEDIA DOWNLOADER</title>
+    <title>TIKTOK DOWNLOADER - Free HD Video & Audio Downloader</title>
     
     <!-- Logo & Favicon Links -->
     <link rel="icon" type="image/png" href="/logo.png">
     <link rel="apple-touch-icon" href="/logo.png">
     
-    <!-- Meta & SEO Tags -->
-    <meta name="description" content="Download TikTok & Media videos in 1080p Full HD, 720p HD without watermark & MP3 audio for free with Dilshan Media Downloader.">
-    <meta property="og:title" content="DILSHAN MEDIA DOWNLOADER">
-    <meta property="og:description" content="Free 1080p, 720p Video & Audio Downloader">
+    <!-- Meta & SEO Tags (Google Search Optimization) -->
+    <meta name="description" content="TikTok Downloader - Download TikTok videos without watermark in 1080p Full HD, 720p HD quality & MP3 audio for free.">
+    <meta name="keywords" content="TikTok Downloader, TikTok Video Downloader, Download TikTok MP3, TikTok No Watermark">
+    <meta property="og:title" content="TIKTOK DOWNLOADER">
+    <meta property="og:description" content="Free 1080p, 720p TikTok Video & MP3 Downloader">
     <meta property="og:image" content="/logo.png">
 
     <style>
@@ -50,9 +51,10 @@
         }
         h1 {
             color: #58a6ff;
-            font-size: 24px;
+            font-size: 26px;
             margin-bottom: 8px;
-            font-weight: 700;
+            font-weight: 800;
+            letter-spacing: 0.5px;
         }
         .subtitle {
             font-size: 13px;
@@ -158,10 +160,15 @@
             display: none;
         }
         footer {
-            margin-top: 25px;
-            font-size: 12px;
+            margin-top: 30px;
+            font-size: 13px;
             color: #8b949e;
             text-align: center;
+            letter-spacing: 0.5px;
+        }
+        footer span {
+            color: #58a6ff;
+            font-weight: 700;
         }
     </style>
 </head>
@@ -169,15 +176,15 @@
 
     <div class="container">
         <!-- Site Logo -->
-        <img src="/logo.png" alt="DILSHAN MEDIA DOWNLOADER Logo" class="logo-img" onerror="this.style.display='none'">
+        <img src="/logo.png" alt="TIKTOK DOWNLOADER Logo" class="logo-img" onerror="this.style.display='none'">
         
         <!-- Header -->
-        <h1>DILSHAN MEDIA DOWNLOADER</h1>
-        <p class="subtitle">Download TikTok & Social Media Videos in 1080p, 720p & MP3</p>
+        <h1>TIKTOK DOWNLOADER</h1>
+        <p class="subtitle">Download TikTok Videos without Watermark in 1080p, 720p & MP3</p>
 
         <!-- Input Box & Button -->
         <div class="input-group">
-            <input type="text" id="videoUrl" placeholder="Paste Video Link Here...">
+            <input type="text" id="videoUrl" placeholder="Paste TikTok Link Here...">
             <button class="btn-search" onclick="fetchVideo()">Download Now</button>
         </div>
 
@@ -202,7 +209,7 @@
         </div>
 
         <footer>
-            &copy; DILSHAN MEDIA DOWNLOADER - All Rights Reserved.
+            Powered by <span>DILSHAN</span>
         </footer>
     </div>
 
@@ -235,14 +242,14 @@
 
                 if (data && data.data) {
                     document.getElementById('coverImg').src = data.data.cover;
-                    document.getElementById('videoTitle').innerText = data.data.title || "Video";
+                    document.getElementById('videoTitle').innerText = data.data.title || "TikTok Video";
                     
                     mediaLinks = {
                         hd1080: data.data.hdplay || data.data.play,
                         sd720: data.data.play,
                         wm: data.data.wmplay || data.data.play,
                         mp3: data.data.music,
-                        title: data.data.title ? data.data.title.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 25) : "video"
+                        title: data.data.title ? data.data.title.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 25) : "tiktok_video"
                     };
 
                     document.getElementById('dl1080').onclick = () => downloadFile(mediaLinks.hd1080, `${mediaLinks.title}_1080p.mp4`);
@@ -262,7 +269,7 @@
             }
         }
 
-        // Direct Download Function without opening new tab
+        // Direct Download Function
         async function downloadFile(fileUrl, fileName) {
             if (!fileUrl) return;
 
@@ -284,7 +291,6 @@
                 document.body.removeChild(link);
                 window.URL.revokeObjectURL(blobUrl);
             } catch (error) {
-                // Fallback
                 const link = document.createElement('a');
                 link.href = fileUrl;
                 link.download = fileName;
