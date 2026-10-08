@@ -13,17 +13,17 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIKTOK & YOUTUBE DOWNLOADER - Free HD Video & Audio Downloader</title>
+    <title>TIKTOK DOWNLOADER - Free HD TikTok Video & Audio Downloader</title>
     
     <!-- Logo & Favicon Links (Updated to New logo) -->
     <link rel="icon" type="image/jpeg" href="/New%20logo.jpg">
     <link rel="apple-touch-icon" href="/New%20logo.jpg">
     
     <!-- Meta & SEO Tags -->
-    <meta name="description" content="Download TikTok & YouTube videos without watermark in 1080p Full HD, 720p HD quality & MP3 audio for free.">
-    <meta name="keywords" content="TikTok Downloader, YouTube Downloader, Download TikTok MP3, YouTube MP3, No Watermark">
-    <meta property="og:title" content="TIKTOK & YOUTUBE DOWNLOADER">
-    <meta property="og:description" content="Free 1080p, 720p Video & Audio Downloader">
+    <meta name="description" content="Download TikTok videos without watermark in 1080p Full HD, 720p HD quality & MP3 audio for free.">
+    <meta name="keywords" content="TikTok Downloader, Download TikTok MP3, TikTok Video Downloader, No Watermark">
+    <meta property="og:title" content="TIKTOK DOWNLOADER">
+    <meta property="og:description" content="Free 1080p, 720p TikTok Video & Audio Downloader">
     <meta property="og:image" content="/New%20logo.jpg">
 
     <style>
@@ -192,15 +192,15 @@
 
     <div class="container">
         <!-- Site Logo -->
-        <img src="/New%20logo.jpg" alt="MEDIA DOWNLOADER Logo" class="logo-img" onerror="this.style.display='none'">
+        <img src="/New%20logo.jpg" alt="TikTok Downloader Logo" class="logo-img" onerror="this.style.display='none'">
         
         <!-- Header -->
-        <h1>MEDIA DOWNLOADER</h1>
-        <p class="subtitle">Download TikTok & YouTube Videos in 1080p, 720p & MP3</p>
+        <h1>TIKTOK DOWNLOADER</h1>
+        <p class="subtitle">Download TikTok Videos in 1080p, 720p & MP3 Without Watermark</p>
 
         <!-- Input Box & Button -->
         <div class="input-group">
-            <input type="text" id="videoUrl" placeholder="Paste TikTok or YouTube Link Here...">
+            <input type="text" id="videoUrl" placeholder="Paste TikTok Link Here...">
             <button class="btn-search" onclick="fetchVideo()">Download Now</button>
         </div>
 
@@ -228,10 +228,6 @@
     </div>
 
     <script>
-        // EMBEDDED ASITHA.TOP CREDENTIALS
-        const ASITHA_API_KEY = "8872ddf50fc62bf1dc169a7a9deb12d118acc75d03fc82d220a0d3afe2c0d468";
-        const ASITHA_ENDPOINT = "https://back.asitha.top/api/ytapi";
-
         async function fetchVideo() {
             const urlInput = document.getElementById('videoUrl').value.trim();
             const loading = document.getElementById('loading');
@@ -244,18 +240,14 @@
             downloadButtons.innerHTML = '';
 
             if (!urlInput) {
-                showError("Please paste a valid video URL!");
+                showError("Please paste a valid TikTok video URL!");
                 return;
             }
 
             loading.innerText = "Processing link... Please wait...";
             loading.style.display = 'block';
 
-            if (urlInput.includes("youtube.com") || urlInput.includes("youtu.be")) {
-                await fetchYouTubeVideo(urlInput);
-            } else {
-                await fetchTikTokVideo(urlInput);
-            }
+            await fetchTikTokVideo(urlInput);
         }
 
         // TikTok API Handler
@@ -290,44 +282,6 @@
             } catch (err) {
                 loading.style.display = 'none';
                 showError("Error connecting to TikTok API!");
-            }
-        }
-
-        // YouTube API Handler
-        async function fetchYouTubeVideo(urlInput) {
-            const loading = document.getElementById('loading');
-            const result = document.getElementById('result');
-            const downloadButtons = document.getElementById('downloadButtons');
-
-            try {
-                const apiUrl = `${ASITHA_ENDPOINT}?apiKey=${ASITHA_API_KEY}&url=${encodeURIComponent(urlInput)}&fo=1&qu=720`;
-                
-                const response = await fetch(apiUrl);
-                const data = await response.json();
-
-                loading.style.display = 'none';
-
-                if (data && (data.dl_url || data.result || data.url || data.download)) {
-                    const downloadUrl = data.dl_url || data.result?.dl_url || data.result || data.url || data.download;
-                    const title = data.title || data.result?.title || "YouTube Video";
-                    const thumbnail = data.thumbnail || data.result?.thumbnail || data.cover || "/New%20logo.jpg";
-                    const titleClean = title.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 25);
-
-                    document.getElementById('coverImg').src = thumbnail;
-                    document.getElementById('videoTitle').innerText = title;
-
-                    downloadButtons.innerHTML = `
-                        <button class="dl-btn dl-1080" onclick="downloadFile('${downloadUrl}', '${titleClean}_720p.mp4')">Download Video (720p HD)</button>
-                        <button class="dl-btn dl-mp3" onclick="downloadFile('${downloadUrl}', '${titleClean}.mp3')">Download Audio (MP3)</button>
-                    `;
-
-                    result.style.display = 'block';
-                } else {
-                    showError("Failed to fetch YouTube video. Please check your link or API limit!");
-                }
-            } catch (err) {
-                loading.style.display = 'none';
-                showError("Error connecting to YouTube API server!");
             }
         }
 
