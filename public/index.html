@@ -15,16 +15,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TIKTOK & YOUTUBE DOWNLOADER - Free HD Video & Audio Downloader</title>
     
-    <!-- Logo & Favicon Links -->
-    <link rel="icon" type="image/png" href="/logo.png">
-    <link rel="apple-touch-icon" href="/logo.png">
+    <!-- Logo & Favicon Links (Updated to New logo) -->
+    <link rel="icon" type="image/jpeg" href="/New%20logo.jpg">
+    <link rel="apple-touch-icon" href="/New%20logo.jpg">
     
     <!-- Meta & SEO Tags -->
     <meta name="description" content="Download TikTok & YouTube videos without watermark in 1080p Full HD, 720p HD quality & MP3 audio for free.">
     <meta name="keywords" content="TikTok Downloader, YouTube Downloader, Download TikTok MP3, YouTube MP3, No Watermark">
     <meta property="og:title" content="TIKTOK & YOUTUBE DOWNLOADER">
     <meta property="og:description" content="Free 1080p, 720p Video & Audio Downloader">
-    <meta property="og:image" content="/logo.png">
+    <meta property="og:image" content="/New%20logo.jpg">
 
     <style>
         * {
@@ -192,7 +192,7 @@
 
     <div class="container">
         <!-- Site Logo -->
-        <img src="/logo.png" alt="MEDIA DOWNLOADER Logo" class="logo-img" onerror="this.style.display='none'">
+        <img src="/New%20logo.jpg" alt="MEDIA DOWNLOADER Logo" class="logo-img" onerror="this.style.display='none'">
         
         <!-- Header -->
         <h1>MEDIA DOWNLOADER</h1>
@@ -310,7 +310,7 @@
                 if (data && (data.dl_url || data.result || data.url || data.download)) {
                     const downloadUrl = data.dl_url || data.result?.dl_url || data.result || data.url || data.download;
                     const title = data.title || data.result?.title || "YouTube Video";
-                    const thumbnail = data.thumbnail || data.result?.thumbnail || data.cover || "/logo.png";
+                    const thumbnail = data.thumbnail || data.result?.thumbnail || data.cover || "/New%20logo.jpg";
                     const titleClean = title.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 25);
 
                     document.getElementById('coverImg').src = thumbnail;
