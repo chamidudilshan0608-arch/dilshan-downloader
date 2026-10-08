@@ -1,19 +1,29 @@
 <!DOCTYPE html>
 <html lang="si">
 <head>
+    <!-- Google tag (gtag.js) - Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GVRDE8RT8G"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-GVRDE8RT8G');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIKTOK DOWNLOADER - Free HD Video & Audio Downloader</title>
+    <title>TIKTOK & YOUTUBE DOWNLOADER - Free HD Video & Audio Downloader</title>
     
     <!-- Logo & Favicon Links -->
     <link rel="icon" type="image/png" href="/logo.png">
     <link rel="apple-touch-icon" href="/logo.png">
     
     <!-- Meta & SEO Tags -->
-    <meta name="description" content="TikTok Downloader - Download TikTok videos without watermark in 1080p Full HD, 720p HD quality & MP3 audio for free.">
-    <meta name="keywords" content="TikTok Downloader, TikTok Video Downloader, Download TikTok MP3, TikTok No Watermark">
-    <meta property="og:title" content="TIKTOK DOWNLOADER">
-    <meta property="og:description" content="Free 1080p, 720p TikTok Video & MP3 Downloader">
+    <meta name="description" content="Download TikTok & YouTube videos without watermark in 1080p Full HD, 720p HD quality & MP3 audio for free.">
+    <meta name="keywords" content="TikTok Downloader, YouTube Downloader, Download TikTok MP3, YouTube MP3, No Watermark">
+    <meta property="og:title" content="TIKTOK & YOUTUBE DOWNLOADER">
+    <meta property="og:description" content="Free 1080p, 720p Video & Audio Downloader">
     <meta property="og:image" content="/logo.png">
 
     <style>
@@ -23,7 +33,7 @@
             padding: 0;
         }
         body {
-            background-color: #06090e; /* Deep Black/Dark Navy */
+            background-color: #06090e;
             color: #e6edf3;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             min-height: 100vh;
@@ -35,11 +45,11 @@
         .container {
             width: 100%;
             max-width: 580px;
-            background-color: #0d131f; /* Sleek Dark Card */
-            border: 1px solid rgba(0, 242, 254, 0.25); /* Subtle Neon Blue Border */
+            background-color: #0d131f;
+            border: 1px solid rgba(0, 242, 254, 0.25);
             border-radius: 20px;
             padding: 32px 25px;
-            box-shadow: 0 0 35px rgba(0, 242, 254, 0.12); /* Soft Cyan Glow */
+            box-shadow: 0 0 35px rgba(0, 242, 254, 0.12);
             text-align: center;
         }
         .logo-img {
@@ -51,7 +61,7 @@
             border: 2px solid rgba(0, 242, 254, 0.4);
         }
         h1 {
-            color: #00f2fe; /* Vibrant Blue */
+            color: #00f2fe;
             font-size: 26px;
             margin-bottom: 6px;
             font-weight: 800;
@@ -152,10 +162,10 @@
             width: 100%;
             transition: opacity 0.2s, transform 0.2s;
         }
-        .dl-1080 { background-color: #10b981; } /* Emerald Green */
-        .dl-720 { background-color: #2563eb; }  /* Royal Blue */
-        .dl-wm { background-color: #d97706; }   /* Amber */
-        .dl-mp3 { background-color: #7c3aed; }  /* Purple */
+        .dl-1080 { background-color: #10b981; }
+        .dl-720 { background-color: #2563eb; }
+        .dl-wm { background-color: #d97706; }
+        .dl-mp3 { background-color: #7c3aed; }
         
         .dl-btn:hover {
             opacity: 0.9;
@@ -169,7 +179,6 @@
             display: none;
         }
         
-        /* Normal Clean Footer Style */
         footer {
             margin-top: 30px;
             font-size: 13px;
@@ -183,15 +192,15 @@
 
     <div class="container">
         <!-- Site Logo -->
-        <img src="/logo.png" alt="TIKTOK DOWNLOADER Logo" class="logo-img" onerror="this.style.display='none'">
+        <img src="/logo.png" alt="MEDIA DOWNLOADER Logo" class="logo-img" onerror="this.style.display='none'">
         
         <!-- Header -->
-        <h1>TIKTOK DOWNLOADER</h1>
-        <p class="subtitle">Download TikTok Videos without Watermark in 1080p, 720p & MP3</p>
+        <h1>MEDIA DOWNLOADER</h1>
+        <p class="subtitle">Download TikTok & YouTube Videos in 1080p, 720p & MP3</p>
 
         <!-- Input Box & Button -->
         <div class="input-group">
-            <input type="text" id="videoUrl" placeholder="Paste TikTok Link Here...">
+            <input type="text" id="videoUrl" placeholder="Paste TikTok or YouTube Link Here...">
             <button class="btn-search" onclick="fetchVideo()">Download Now</button>
         </div>
 
@@ -207,40 +216,53 @@
             <div id="videoTitle" class="video-title"></div>
 
             <div class="section-label">Select Quality to Download:</div>
-            <div class="download-options">
-                <button id="dl1080" class="dl-btn dl-1080">Download 1080p Full HD (No Watermark)</button>
-                <button id="dl720" class="dl-btn dl-720">Download 720p HD (No Watermark)</button>
-                <button id="dlWm" class="dl-btn dl-wm">Download Watermark Video</button>
-                <button id="dlMp3" class="dl-btn dl-mp3">Download Audio (MP3)</button>
+            <div class="download-options" id="downloadButtons">
+                <!-- Dynamic Buttons will be inserted here -->
             </div>
         </div>
 
-        <!-- Normal Footer -->
+        <!-- Footer -->
         <footer>
             © Powered by Dilshan
         </footer>
     </div>
 
     <script>
-        let mediaLinks = {};
+        // EMBEDDED ASITHA.TOP CREDENTIALS
+        const ASITHA_API_KEY = "8872ddf50fc62bf1dc169a7a9deb12d118acc75d03fc82d220a0d3afe2c0d468";
+        const ASITHA_ENDPOINT = "https://back.asitha.top/api/ytapi";
 
         async function fetchVideo() {
             const urlInput = document.getElementById('videoUrl').value.trim();
             const loading = document.getElementById('loading');
             const result = document.getElementById('result');
             const errorMsg = document.getElementById('errorMsg');
+            const downloadButtons = document.getElementById('downloadButtons');
 
             errorMsg.style.display = 'none';
             result.style.display = 'none';
+            downloadButtons.innerHTML = '';
 
             if (!urlInput) {
-                errorMsg.innerText = "Please paste a valid video URL!";
-                errorMsg.style.display = 'block';
+                showError("Please paste a valid video URL!");
                 return;
             }
 
-            loading.innerText = "Processing... Please wait...";
+            loading.innerText = "Processing link... Please wait...";
             loading.style.display = 'block';
+
+            if (urlInput.includes("youtube.com") || urlInput.includes("youtu.be")) {
+                await fetchYouTubeVideo(urlInput);
+            } else {
+                await fetchTikTokVideo(urlInput);
+            }
+        }
+
+        // TikTok API Handler
+        async function fetchTikTokVideo(urlInput) {
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const downloadButtons = document.getElementById('downloadButtons');
 
             try {
                 const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}&hd=1`);
@@ -252,32 +274,70 @@
                     document.getElementById('coverImg').src = data.data.cover;
                     document.getElementById('videoTitle').innerText = data.data.title || "TikTok Video";
                     
-                    mediaLinks = {
-                        hd1080: data.data.hdplay || data.data.play,
-                        sd720: data.data.play,
-                        wm: data.data.wmplay || data.data.play,
-                        mp3: data.data.music,
-                        title: data.data.title ? data.data.title.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 25) : "tiktok_video"
-                    };
-
-                    document.getElementById('dl1080').onclick = () => downloadFile(mediaLinks.hd1080, `${mediaLinks.title}_1080p.mp4`);
-                    document.getElementById('dl720').onclick = () => downloadFile(mediaLinks.sd720, `${mediaLinks.title}_720p.mp4`);
-                    document.getElementById('dlWm').onclick = () => downloadFile(mediaLinks.wm, `${mediaLinks.title}_watermark.mp4`);
-                    document.getElementById('dlMp3').onclick = () => downloadFile(mediaLinks.mp3, `${mediaLinks.title}.mp3`);
+                    const titleClean = data.data.title ? data.data.title.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 25) : "tiktok_video";
+                    
+                    downloadButtons.innerHTML = `
+                        <button class="dl-btn dl-1080" onclick="downloadFile('${data.data.hdplay || data.data.play}', '${titleClean}_1080p.mp4')">Download 1080p Full HD (No Watermark)</button>
+                        <button class="dl-btn dl-720" onclick="downloadFile('${data.data.play}', '${titleClean}_720p.mp4')">Download 720p HD (No Watermark)</button>
+                        <button class="dl-btn dl-wm" onclick="downloadFile('${data.data.wmplay || data.data.play}', '${titleClean}_watermark.mp4')">Download Watermark Video</button>
+                        <button class="dl-btn dl-mp3" onclick="downloadFile('${data.data.music}', '${titleClean}.mp3')">Download Audio (MP3)</button>
+                    `;
 
                     result.style.display = 'block';
                 } else {
-                    errorMsg.innerText = "Failed to fetch video. Please check the link!";
-                    errorMsg.style.display = 'block';
+                    showError("Failed to fetch TikTok video. Please check the link!");
                 }
             } catch (err) {
                 loading.style.display = 'none';
-                errorMsg.innerText = "An error occurred while downloading!";
-                errorMsg.style.display = 'block';
+                showError("Error connecting to TikTok API!");
             }
         }
 
-        // Direct Download Function without opening new tab
+        // YouTube API Handler
+        async function fetchYouTubeVideo(urlInput) {
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const downloadButtons = document.getElementById('downloadButtons');
+
+            try {
+                const apiUrl = `${ASITHA_ENDPOINT}?apiKey=${ASITHA_API_KEY}&url=${encodeURIComponent(urlInput)}&fo=1&qu=720`;
+                
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+
+                loading.style.display = 'none';
+
+                if (data && (data.dl_url || data.result || data.url || data.download)) {
+                    const downloadUrl = data.dl_url || data.result?.dl_url || data.result || data.url || data.download;
+                    const title = data.title || data.result?.title || "YouTube Video";
+                    const thumbnail = data.thumbnail || data.result?.thumbnail || data.cover || "/logo.png";
+                    const titleClean = title.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 25);
+
+                    document.getElementById('coverImg').src = thumbnail;
+                    document.getElementById('videoTitle').innerText = title;
+
+                    downloadButtons.innerHTML = `
+                        <button class="dl-btn dl-1080" onclick="downloadFile('${downloadUrl}', '${titleClean}_720p.mp4')">Download Video (720p HD)</button>
+                        <button class="dl-btn dl-mp3" onclick="downloadFile('${downloadUrl}', '${titleClean}.mp3')">Download Audio (MP3)</button>
+                    `;
+
+                    result.style.display = 'block';
+                } else {
+                    showError("Failed to fetch YouTube video. Please check your link or API limit!");
+                }
+            } catch (err) {
+                loading.style.display = 'none';
+                showError("Error connecting to YouTube API server!");
+            }
+        }
+
+        function showError(msg) {
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.innerText = msg;
+            errorMsg.style.display = 'block';
+        }
+
+        // Direct Download Handler
         async function downloadFile(fileUrl, fileName) {
             if (!fileUrl) return;
 
