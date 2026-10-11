@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="si">
-<head><link rel="manifest" href="/manifest.json">
-<meta name="theme-color" content="#00f2fe">
-
+<head>
     <!-- Google tag (gtag.js) - Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-ZDJ7CCZVK5"></script>
     <script>
@@ -17,6 +15,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TIKTOK DOWNLOADER - Free HD TikTok Video & Audio Downloader</title>
     
+    <!-- PWA Manifest & Theme -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#00f2fe">
+
     <!-- Logo & Favicon Links -->
     <link rel="icon" type="image/jpeg" href="/New%20logo.jpg">
     <link rel="apple-touch-icon" href="/New%20logo.jpg">
@@ -53,6 +55,46 @@
             padding: 32px 25px;
             box-shadow: 0 0 35px rgba(0, 242, 254, 0.12);
             text-align: center;
+        }
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .brand-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo-small {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            object-fit: cover;
+            border: 1px solid rgba(0, 242, 254, 0.4);
+        }
+        .brand-name {
+            font-weight: bold;
+            color: #00f2fe;
+            font-size: 16px;
+        }
+        .install-btn {
+            display: none;
+            background: rgba(0, 242, 254, 0.15);
+            color: #00f2fe;
+            border: 1px solid rgba(0, 242, 254, 0.4);
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.2s;
+        }
+        .install-btn:hover {
+            background: rgba(0, 242, 254, 0.25);
         }
         .logo-img {
             width: 90px;
@@ -193,7 +235,18 @@
 <body>
 
     <div class="container">
-        <!-- Site Logo -->
+        <!-- Top bar with SnapTik style Install Button -->
+        <div class="top-bar">
+            <div class="brand-info">
+                <img src="/New%20logo.jpg" alt="Logo" class="logo-small" onerror="this.style.display='none'">
+                <span class="brand-name">TikTok DL</span>
+            </div>
+            <button id="installBtn" class="install-btn" onclick="installApp()">
+                📱 Install App
+            </button>
+        </div>
+
+        <!-- Main Site Logo -->
         <img src="/New%20logo.jpg" alt="TikTok Downloader Logo" class="logo-img" onerror="this.style.display='none'">
         
         <!-- Header -->
@@ -230,6 +283,40 @@
     </div>
 
     <script>
+        // PWA Install Prompt Logic
+        let deferredPrompt;
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            const installBtn = document.getElementById('installBtn');
+            if (installBtn) {
+                installBtn.style.display = 'inline-flex';
+            }
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    }
+                    deferredPrompt = null;
+                    document.getElementById('installBtn').style.display = 'none';
+                });
+            }
+        }
+
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker registered!'))
+                    .catch(err => console.log('Service Worker registration failed:', err));
+            });
+        }
+
         async function fetchVideo() {
             const urlInput = document.getElementById('videoUrl').value.trim();
             const loading = document.getElementById('loading');
