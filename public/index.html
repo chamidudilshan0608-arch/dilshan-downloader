@@ -75,17 +75,31 @@
             font-size: 13px;
             margin-bottom: 20px;
         }
-        .login-box input {
+        .password-wrapper {
+            position: relative;
             width: 100%;
-            padding: 12px 15px;
+            margin-bottom: 15px;
+        }
+        .login-box input[type="password"],
+        .login-box input[type="text"] {
+            width: 100%;
+            padding: 12px 45px 12px 15px;
             background-color: #06090e;
             border: 1px solid #1f293d;
             border-radius: 10px;
             color: #fff;
             font-size: 14px;
-            margin-bottom: 15px;
             outline: none;
             text-align: center;
+        }
+        .toggle-eye {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            user-select: none;
         }
         .login-box button {
             width: 100%;
@@ -262,7 +276,10 @@
         <div class="login-box">
             <h2>🔒 Private Downloader</h2>
             <p>Please enter password to access</p>
-            <input type="password" id="passInput" placeholder="Enter Password">
+            <div class="password-wrapper">
+                <input type="password" id="passInput" placeholder="Enter Password">
+                <span class="toggle-eye" id="toggleIcon" onclick="togglePasswordVisibility()">👁️</span>
+            </div>
             <button onclick="checkPassword()">Unlock</button>
             <p id="passError" style="color: #f85149; margin-top: 10px; display: none;">Wrong password!</p>
         </div>
@@ -315,8 +332,21 @@
             document.getElementById("mainContainer").style.display = "block";
         }
 
+        // Toggle Password Visibility (ඇසේ ලකුණ ක්ලික් කළ විට පෙන්වීම/සැඟවීම)
+        function togglePasswordVisibility() {
+            const passInput = document.getElementById("passInput");
+            const toggleIcon = document.getElementById("toggleIcon");
+
+            if (passInput.type === "password") {
+                passInput.type = "text";
+                toggleIcon.textContent = "🙈"; // පෙන්වන විට වෙනස් වන අයිකනය
+            } else {
+                passInput.type = "password";
+                toggleIcon.textContent = "👁️"; // සඟවා ඇති විට අයිකනය
+            }
+        }
+
         function checkPassword() {
-            // .trim() මඟින් මුලින් හෝ අගින් වැටෙන අላවස්ය Space ඉවත් කරයි
             const input = document.getElementById("passInput").value.trim();
             const error = document.getElementById("passError");
 
