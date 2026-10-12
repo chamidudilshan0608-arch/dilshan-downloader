@@ -101,6 +101,22 @@
             font-size: 18px;
             user-select: none;
         }
+        .remember-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: #8b949e;
+            justify-content: flex-start;
+            cursor: pointer;
+        }
+        .remember-container input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #00f2fe;
+        }
         .login-box button {
             width: 100%;
             padding: 12px;
@@ -280,6 +296,10 @@
                 <input type="password" id="passInput" placeholder="Enter Password">
                 <span class="toggle-eye" id="toggleIcon" onclick="togglePasswordVisibility()">👁️</span>
             </div>
+            <div class="remember-container" onclick="document.getElementById('rememberMe').click()">
+                <input type="checkbox" id="rememberMe">
+                <label for="rememberMe">Remember Password</label>
+            </div>
             <button onclick="checkPassword()">Unlock</button>
             <p id="passError" style="color: #f85149; margin-top: 10px; display: none;">Wrong password!</p>
         </div>
@@ -327,31 +347,40 @@
         // Password Logic
         const SECRET_PASS = "#dilshan6767#";
 
-        if (sessionStorage.getItem("isUnlocked") === "true") {
+        // Check if previously unlocked (either permanently via localStorage or session)
+        if (localStorage.getItem("isUnlocked") === "true" || sessionStorage.getItem("isUnlocked") === "true") {
             document.getElementById("loginOverlay").style.display = "none";
             document.getElementById("mainContainer").style.display = "block";
         }
 
-        // Toggle Password Visibility (ඇසේ ලකුණ ක්ලික් කළ විට පෙන්වීම/සැඟවීම)
+        // Toggle Password Visibility
         function togglePasswordVisibility() {
             const passInput = document.getElementById("passInput");
             const toggleIcon = document.getElementById("toggleIcon");
 
             if (passInput.type === "password") {
                 passInput.type = "text";
-                toggleIcon.textContent = "🙈"; // පෙන්වන විට වෙනස් වන අයිකනය
+                toggleIcon.textContent = "🙈";
             } else {
                 passInput.type = "password";
-                toggleIcon.textContent = "👁️"; // සඟවා ඇති විට අයිකනය
+                toggleIcon.textContent = "👁️";
             }
         }
 
         function checkPassword() {
             const input = document.getElementById("passInput").value.trim();
+            const rememberMe = document.getElementById("rememberMe").checked;
             const error = document.getElementById("passError");
 
             if (input === SECRET_PASS) {
-                sessionStorage.setItem("isUnlocked", "true");
+                if (rememberMe) {
+                    // Checkbox එක දී තිබේ නම් සදාකාලිකව Save වේ (localStorage)
+                    localStorage.setItem("isUnlocked", "true");
+                } else {
+                    // Checkbox එක දී නැත්නම් බ්‍රවුසරය වසන තෙක් පමණක් ක්‍රියාත්මක වේ (sessionStorage)
+                    sessionStorage.setItem("isUnlocked", "true");
+                }
+                
                 document.getElementById("loginOverlay").style.display = "none";
                 document.getElementById("mainContainer").style.display = "block";
             } else {
