@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TikTok & YouTube Downloader</title>
+  <title>TikTok Downloader PWA</title>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#fe2c55">
 
@@ -49,11 +49,11 @@
 
   <div class="container">
     <img src="/New logo.jpg" alt="Logo" class="logo" onerror="this.src='https://via.placeholder.com/80'">
-    <h1>Media Downloader</h1>
-    <p class="subtitle">Download TikTok & YouTube Videos easily</p>
+    <h1>TikTok Downloader</h1>
+    <p class="subtitle">Download TikTok Videos without Watermark</p>
 
     <div class="input-group">
-      <input type="text" id="urlInput" placeholder="Paste TikTok or YouTube Link here...">
+      <input type="text" id="urlInput" placeholder="Paste TikTok Link here...">
       <button class="btn" onclick="processDownload()">Download Now</button>
     </div>
 
@@ -84,28 +84,27 @@
       }
     });
 
-    // Download Logic for TikTok & YouTube
+    // Download Logic
     async function processDownload() {
       const url = document.getElementById('urlInput').value.trim();
       const resultDiv = document.getElementById('result');
       
       if (!url) {
-        alert("Please paste a URL first!");
+        alert("කරුණාකර ලින්ක් එකක් ඇතුළත් කරන්න!");
         return;
       }
 
-      resultDiv.innerHTML = "<p style='text-align:center; color:#aaa;'>Processing...</p>";
-
-      // Check if YouTube
+      // YouTube ලින්ක් ලබා දුන්නොත් පණිවිඩයක් පෙන්වීම
       if (url.includes("youtube.com") || url.includes("youtu.be")) {
-        fetchYouTube(url);
-      } else {
-        // Default to TikTok
-        fetchTikTok(url);
+        resultDiv.innerHTML = "<p style='color:#fe2c55; text-align:center;'>YouTube downloads are currently unavailable due to platform security restrictions. Please use TikTok links!</p>";
+        return;
       }
+
+      resultDiv.innerHTML = "<p style='text-align:center; color:#aaa;'>සොයමින් පවතී...</p>";
+      fetchTikTok(url);
     }
 
-    // TikTok Downloader (TikWM API)
+    // TikTok Downloader (TikWM API - 100% Stable)
     async function fetchTikTok(url) {
       const resultDiv = document.getElementById('result');
       try {
@@ -122,41 +121,10 @@
             </div>
           `;
         } else {
-          resultDiv.innerHTML = "<p style='color:#fe2c55; text-align:center;'>Unable to fetch TikTok video. Check link!</p>";
+          resultDiv.innerHTML = "<p style='color:#fe2c55; text-align:center;'>වීඩියෝව ලබාගත නොහැකි විය. ලින්ක් එක පරීක්ෂා කරන්න!</p>";
         }
       } catch (err) {
-        resultDiv.innerHTML = "<p style='color:#fe2c55; text-align:center;'>Error loading video.</p>";
-      }
-    }
-
-    // YouTube Downloader (Through Server Proxy with proper response handling)
-    async function fetchYouTube(url) {
-      const resultDiv = document.getElementById('result');
-      try {
-        const response = await fetch('/api/youtube', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ url: url })
-        });
-
-        const data = await response.json();
-
-        const videoUrl = data.url || (data.picker && data.picker[0] && data.picker[0].url);
-
-        if (videoUrl) {
-          resultDiv.innerHTML = `
-            <p style="margin-bottom:10px; font-size:14px;"><strong>YouTube Video Ready!</strong></p>
-            <div class="download-btns">
-              <a href="${videoUrl}" class="dl-link" target="_blank" download>Download Video</a>
-            </div>
-          `;
-        } else {
-          resultDiv.innerHTML = "<p style='color:#fe2c55; text-align:center;'>Unable to fetch YouTube video. Try another link.</p>";
-        }
-      } catch (err) {
-        resultDiv.innerHTML = "<p style='color:#fe2c55; text-align:center;'>Error connecting to YouTube API.</p>";
+        resultDiv.innerHTML = "<p style='color:#fe2c55; text-align:center;'>දෝෂයක් සිදු විය. නැවත උත්සාහ කරන්න.</p>";
       }
     }
   </script>
