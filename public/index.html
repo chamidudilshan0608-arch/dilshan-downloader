@@ -79,12 +79,12 @@
         .password-wrapper {
             position: relative;
             width: 100%;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
         .login-box input[type="password"],
         .login-box input[type="text"] {
             width: 100%;
-            padding: 12px 45px 12px 15px;
+            padding: 12px 60px 12px 15px;
             background-color: #06090e;
             border: 1px solid #1f293d;
             border-radius: 10px;
@@ -93,13 +93,15 @@
             outline: none;
             text-align: center;
         }
-        .toggle-eye {
+        .toggle-text {
             position: absolute;
             right: 12px;
             top: 50%;
             transform: translateY(-50%);
             cursor: pointer;
-            font-size: 18px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #00f2fe;
             user-select: none;
         }
         .remember-container {
@@ -132,7 +134,7 @@
             cursor: pointer;
         }
 
-        /* Top-Right Logout Button Position */
+        /* Top-Right Logout Button */
         .logout-corner-btn {
             position: absolute;
             top: 15px;
@@ -318,7 +320,7 @@
             <p>Please enter password to access</p>
             <div class="password-wrapper">
                 <input type="password" id="passInput" placeholder="Enter Password">
-                <span class="toggle-eye" id="toggleIcon" onclick="togglePasswordVisibility()">👁️</span>
+                <span class="toggle-text" id="toggleText" onclick="togglePasswordVisibility()">Show</span>
             </div>
             <div class="remember-container">
                 <input type="checkbox" id="rememberMe">
@@ -331,7 +333,7 @@
 
     <!-- Main Container -->
     <div class="container" id="mainContainer">
-        <!-- Top-Right Corner Logout Button -->
+        <!-- Top-Right Logout Button -->
         <button class="logout-corner-btn" onclick="logoutApp()">
             🔒 Logout
         </button>
@@ -381,17 +383,17 @@
             document.getElementById("mainContainer").style.display = "block";
         }
 
-        // Toggle Password Visibility
+        // Toggle Password Visibility (Google Style Show/Hide)
         function togglePasswordVisibility() {
             const passInput = document.getElementById("passInput");
-            const toggleIcon = document.getElementById("toggleIcon");
+            const toggleText = document.getElementById("toggleText");
 
             if (passInput.type === "password") {
                 passInput.type = "text";
-                toggleIcon.textContent = "🙈";
+                toggleText.textContent = "Hide";
             } else {
                 passInput.type = "password";
-                toggleIcon.textContent = "👁️";
+                toggleText.textContent = "Show";
             }
         }
 
