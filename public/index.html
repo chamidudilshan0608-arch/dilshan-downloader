@@ -40,6 +40,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            position: relative;
         }
 
         /* Password Modal Styling */
@@ -131,6 +132,25 @@
             cursor: pointer;
         }
 
+        /* Top-Right Logout Button Position */
+        .logout-corner-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(248, 81, 73, 0.15);
+            color: #f85149;
+            border: 1px solid rgba(248, 81, 73, 0.4);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 10;
+        }
+
         /* Main Container */
         .container {
             width: 100%;
@@ -142,6 +162,7 @@
             box-shadow: 0 0 35px rgba(0, 242, 254, 0.12);
             text-align: center;
             display: none;
+            margin-top: 25px;
         }
         .top-bar {
             display: flex;
@@ -310,6 +331,11 @@
 
     <!-- Main Container -->
     <div class="container" id="mainContainer">
+        <!-- Top-Right Corner Logout Button -->
+        <button class="logout-corner-btn" onclick="logoutApp()">
+            🔒 Logout
+        </button>
+
         <div class="top-bar">
             <div class="brand-info">
                 <img src="/icon-512.png" alt="Logo" class="logo-small" onerror="this.style.display='none'">
@@ -383,9 +409,21 @@
                 
                 document.getElementById("loginOverlay").style.display = "none";
                 document.getElementById("mainContainer").style.display = "block";
+                error.style.display = 'none';
             } else {
                 error.style.display = "block";
             }
+        }
+
+        // Logout Logic
+        function logoutApp() {
+            localStorage.removeItem("isUnlocked");
+            sessionStorage.removeItem("isUnlocked");
+            document.getElementById("passInput").value = "";
+            document.getElementById("rememberMe").checked = false;
+            document.getElementById("passError").style.display = "none";
+            document.getElementById("mainContainer").style.display = "none";
+            document.getElementById("loginOverlay").style.display = "flex";
         }
 
         // PWA Install Prompt
