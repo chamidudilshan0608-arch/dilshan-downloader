@@ -7,9 +7,10 @@
   "theme_color": "#00f2fe",
   "icons": [
     {
-      "src": "/New%20logo.jpg",
+      "src": "/icon-512.png",
       "sizes": "192x192 512x512",
-      "type": "image/jpeg"
+      "type": "image/png",
+      "purpose": "any maskable"
     }
   ]
 }
