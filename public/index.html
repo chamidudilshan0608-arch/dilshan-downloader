@@ -129,7 +129,7 @@
       }
     }
 
-    // YouTube Downloader (Through our Server Proxy)
+    // YouTube Downloader (Through Server Proxy with proper response handling)
     async function fetchYouTube(url) {
       const resultDiv = document.getElementById('result');
       try {
@@ -143,11 +143,13 @@
 
         const data = await response.json();
 
-        if (data && data.url) {
+        const videoUrl = data.url || (data.picker && data.picker[0] && data.picker[0].url);
+
+        if (videoUrl) {
           resultDiv.innerHTML = `
             <p style="margin-bottom:10px; font-size:14px;"><strong>YouTube Video Ready!</strong></p>
             <div class="download-btns">
-              <a href="${data.url}" class="dl-link" target="_blank" download>Download Video</a>
+              <a href="${videoUrl}" class="dl-link" target="_blank" download>Download Video</a>
             </div>
           `;
         } else {
