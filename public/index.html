@@ -307,7 +307,7 @@
     </div>
 
     <script>
-        // Password Logic (ටොකන් එක / පාස්වර්ඩ් එක මෙහි සකසා ඇත)
+        // Password Logic
         const SECRET_PASS = "#dilshan6767#";
 
         if (sessionStorage.getItem("isUnlocked") === "true") {
@@ -316,7 +316,8 @@
         }
 
         function checkPassword() {
-            const input = document.getElementById("passInput").value;
+            // .trim() මඟින් මුලින් හෝ අගින් වැටෙන අላවස්ය Space ඉවත් කරයි
+            const input = document.getElementById("passInput").value.trim();
             const error = document.getElementById("passError");
 
             if (input === SECRET_PASS) {
@@ -382,9 +383,8 @@
             const downloadButtons = document.getElementById('downloadButtons');
 
             try {
-                const response = `https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}&hd=1`;
-                const apiRes = await fetch(response);
-                const data = await apiRes.json();
+                const response = await fetch(`https://www.tikwm.com/api/?url=${encodeURIComponent(urlInput)}&hd=1`);
+                const data = await response.json();
 
                 loading.style.display = 'none';
 
