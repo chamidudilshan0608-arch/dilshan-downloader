@@ -6,19 +6,21 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// YouTube Proxy API Route (User-Agent එකක් සමඟ)
+// YouTube Proxy API Route (Cobalt Official API සමඟ)
 app.post('/api/youtube', async (req, res) => {
   try {
     const { url } = req.body;
     
-    const response = await fetch('https://co.wuk.sh/api/json', {
+    const response = await fetch('https://api.cobalt.tools/api/json', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ url: url })
+      body: JSON.stringify({ 
+        url: url,
+        downloadMode: 'auto'
+      })
     });
 
     const data = await response.json();
