@@ -1,7 +1,15 @@
+const CACHE_NAME = 'tiktok-dl-v1';
+const assetsToCache = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/New logo.jpg'
+];
+
 self.addEventListener('install', (e) => {
   e.waitUntil(
-    caches.open('media-dl-v1').then((cache) => {
-      return cache.addAll(['/', '/index.html', '/manifest.json', '/New logo.jpg']);
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(assetsToCache);
     })
   );
 });
