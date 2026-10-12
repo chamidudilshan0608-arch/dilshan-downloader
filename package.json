@@ -1,7 +1,7 @@
 {
-  "name": "media-downloader",
+  "name": "tiktok-downloader-pwa",
   "version": "1.0.0",
-  "description": "TikTok and YouTube Downloader PWA",
+  "description": "TikTok Downloader PWA for Android, Windows and Mac",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
