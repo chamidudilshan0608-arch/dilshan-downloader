@@ -1,11 +1,15 @@
-self.addEventListener('install', (event) => {
-  self.skipWaiting();
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open('media-dl-v1').then((cache) => {
+      return cache.addAll(['/', '/index.html', '/manifest.json', '/New logo.jpg']);
+    })
+  );
 });
 
-self.addEventListener('activate', (event) => {
-  event.waitUntil(clients.claim());
-});
-
-self.addEventListener('fetch', (event) => {
-  // Pass-through fetch
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((response) => {
+      return response || fetch(e.request);
+    })
+  );
 });
